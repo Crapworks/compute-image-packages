@@ -82,6 +82,24 @@ class NetworkSetup(object):
     # Distro-specific setup for disabling IPv6 on network interfaces.
     self.distro_utils.DisableIpv6(interfaces, self.logger)
 
+  def ChangeDefaultRoute(self, defaultgw, interface, source_ip):
+    """Explicitly sets a source ip for the default route.
+
+    For SAP setups, the custmer sets multiple alias IP addresses for one
+    interface and also sets the addresses up in the OS to be able to bind
+    to them. There is no guarantee that the interface with the primary ip
+    will be the first one. So we need to set the source IP used for the
+    default route explicitly.
+
+    Args:
+      source_ip: the source ip that should be set for the default route.
+    """
+    self.logger.info('Setting source ip for default route to %s.', source_ip)
+
+    # Distro-specific setup for changing the default route
+    self.distro_utils.ChangeDefaultRoute(defaultgw, interface, source_ip, self.logger)
+
+
   def EnableNetworkInterfaces(self, interfaces):
     """Enable the list of network interfaces.
 

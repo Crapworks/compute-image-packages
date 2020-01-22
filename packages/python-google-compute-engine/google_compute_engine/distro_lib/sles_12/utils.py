@@ -48,6 +48,22 @@ class Utils(utils.Utils):
     """
     pass
 
+  def ChangeDefaultRoute(self, defaultgw, interface, source_ip, logger):
+    """Todo
+
+    Args:
+      defaultgw: string, address of the default gateway.
+      interface: string, name of the interface.
+      source_ip: string, source ip of the default route.
+      logger: logger object, used to write to SysLog and serial port.
+    """
+    iproute = ['ip', 'route', 'change', 'default', 'via', defaultgw, 'src', source_ip, 'dev', interface]
+    try:
+      subprocess.check_call(iproute)
+    except subprocess.CalledProcessError:
+      logger.warning('Could not set source ip for default route')
+
+
   def EnableNetworkInterfaces(self, interfaces, logger, dhclient_script=None):
     """Enable the list of network interfaces.
 

@@ -56,6 +56,17 @@ class Utils(object):
     """
     pass
 
+  def ChangeDefaultRoute(self, defaultgw, interface, source_ip, logger):
+    """Todo
+
+    Args:
+      defaultgw: string, address of the default gateway.
+      interface: string, name of the interface.
+      source_ip: string, source ip of the default route.
+      logger: logger object, used to write to SysLog and serial port.
+    """
+    pass
+
   def HandleClockSync(self, logger):
     """Sync the software clock with the hypervisor clock.
 

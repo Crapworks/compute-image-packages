@@ -99,6 +99,13 @@ class NetworkDaemon(object):
       self.network_setup.EnableNetworkInterfaces(
           [interface.name for interface in network_interfaces[1:]])
 
+      if default_interface.forwarded_ips:
+        self.network_setup.ChangeDefaultRoute(
+            default_interface.gateway,
+            default_interface.name,
+            default_interface.ip
+        )
+
     if self.ip_forwarding_enabled:
       for interface in network_interfaces:
         self.ip_forwarding.HandleForwardedIps(
@@ -127,7 +134,8 @@ class NetworkDaemon(object):
         interfaces.append(NetworkDaemon.NetworkInterface(
             interface, forwarded_ips=ip_addresses,
             ip=network_interface.get('ip', None),
-            ipv6='dhcpv6Refresh' in network_interface.keys()))
+            ipv6='dhcpv6Refresh' in network_interface.keys(),
+	    gateway=network_interface.get('gateway')))
       else:
         message = 'Network interface not found for MAC address: %s.'
         self.logger.warning(message, mac_address)
@@ -136,11 +144,12 @@ class NetworkDaemon(object):
   class NetworkInterface(object):
     """Network interface information extracted from metadata."""
 
-    def __init__(self, name, forwarded_ips=None, ip=None, ipv6=False):
+    def __init__(self, name, forwarded_ips=None, ip=None, ipv6=False, gateway=None):
       self.name = name
       self.forwarded_ips = forwarded_ips
       self.ip = ip
       self.ipv6 = ipv6
+      self.gateway = gateway
 
 
 def main():
