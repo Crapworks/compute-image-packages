@@ -57,7 +57,7 @@ class Utils(object):
     pass
 
   def ChangeDefaultRoute(self, defaultgw, interface, source_ip, logger):
-    """Todo
+    """Change the default route to set an explicit source ip.
 
     Args:
       defaultgw: string, address of the default gateway.
